@@ -7,7 +7,8 @@ namespace csharp
     public class GildedRoseTest
     {
         [Test]
-        public void TestAnyNormal() {
+        public void TestAnyNormal()
+        {
             var item = new Item { Name = "Whatever", SellIn = 10, Quality = 10 };
             GildedRose app = new GildedRose(new List<Item> { item });
             app.UpdateQuality();
@@ -22,6 +23,14 @@ namespace csharp
             GildedRose app = new GildedRose(new List<Item> { item });
             app.UpdateQuality();
             Assert.AreEqual(0, item.Quality);
+        }
+        [Test]
+        public void TestNormalZeroQualityZeroSellin()
+        {
+            var item = new Item { Name = "Whatever", SellIn = 0, Quality = 10 };
+            GildedRose app = new GildedRose(new List<Item> { item });
+            app.UpdateQuality();
+            Assert.AreEqual(8, item.Quality);
         }
         [Test]
         public void TestNormalOverSold()
@@ -96,6 +105,32 @@ namespace csharp
             app.UpdateQuality();
             Assert.AreEqual(10, item.Quality);
             Assert.AreEqual(0, item.SellIn);
+        }
+        [Test]
+        public void TestConjured()
+        {
+            var item = new Item { Name = "Conjured Mana Cake", SellIn = 10, Quality = 10 };
+            GildedRose app = new GildedRose(new List<Item> { item });
+            app.UpdateQuality();
+            Assert.AreEqual(9, item.SellIn);
+            Assert.AreEqual(8, item.Quality);
+        }
+
+        [Test]
+        public void TestConjuredZero()
+        {
+            var item = new Item { Name = "Conjured Mana Cake", SellIn = 0, Quality = 0 };
+            GildedRose app = new GildedRose(new List<Item> { item });
+            app.UpdateQuality();
+            Assert.AreEqual(0, item.Quality);
+        }
+        [Test]
+        public void TestConjuredOverSold()
+        {
+            var item = new Item { Name = "Conjured Mana Cake", SellIn = -5, Quality = 10 };
+            GildedRose app = new GildedRose(new List<Item> { item });
+            app.UpdateQuality();
+            Assert.AreEqual(6, item.Quality);
         }
     }
 }
